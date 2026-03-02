@@ -1,94 +1,95 @@
 /**
  * ===============================================================
- * MAIN CLASS – UseCase12PalindromeCheckerApp
+ * MAIN CLASS – UseCase13PalindromeCheckerApp
  * ===============================================================
  *
- * Use Case 12: Strategy Pattern for Palindrome Algorithms
+ * Use Case 13: Performance Comparison
  *
  * Description:
- * Demonstrates dynamic selection of palindrome algorithms
- * using the Strategy Design Pattern.
+ * This program compares execution time of different
+ * palindrome checking algorithms using System.nanoTime().
  *
  * @author Developer
- * @version 12.0
+ * @version 13.0
  */
 
 import java.util.*;
 
-// ================= INTERFACE =================
-interface PalindromeStrategy {
-    boolean check(String input);
-}
-
-// ================= STACK STRATEGY =================
-class StackStrategy implements PalindromeStrategy {
-
-    @Override
-    public boolean check(String input) {
-
-        // Create stack
-        Stack<Character> stack = new Stack<>();
-
-        // Push characters
-        for (char c : input.toCharArray()) {
-            stack.push(c);
-        }
-
-        // Compare by popping
-        for (char c : input.toCharArray()) {
-            if (c != stack.pop()) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-}
-
-// ================= DEQUE STRATEGY =================
-class DequeStrategy implements PalindromeStrategy {
-
-    @Override
-    public boolean check(String input) {
-
-        Deque<Character> deque = new ArrayDeque<>();
-
-        // Insert characters
-        for (char c : input.toCharArray()) {
-            deque.addLast(c);
-        }
-
-        // Compare front & rear
-        while (deque.size() > 1) {
-            if (!deque.removeFirst().equals(deque.removeLast())) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-}
-
-// ================= MAIN APP =================
 public class PalindroneCheckerApp {
 
     public static void main(String[] args) {
 
-        String input = "madam";
+        String input = "A man a plan a canal Panama";
+        String normalized = input.replaceAll("\\s+", "").toLowerCase();
 
-        // 🔥 Choose strategy dynamically
-        PalindromeStrategy strategy;
+        System.out.println("Input: \"" + input + "\"\n");
 
-        // You can switch algorithm here
-        strategy = new StackStrategy();
-        // strategy = new DequeStrategy();
+        // ===== Method 1: Two-pointer =====
+        long start1 = System.nanoTime();
+        boolean result1 = twoPointerCheck(normalized);
+        long end1 = System.nanoTime();
 
-        boolean isPalindrome = strategy.check(input);
+        // ===== Method 2: Stack =====
+        long start2 = System.nanoTime();
+        boolean result2 = stackCheck(normalized);
+        long end2 = System.nanoTime();
 
-        if (isPalindrome) {
-            System.out.println(input + " is a Palindrome.");
-        } else {
-            System.out.println(input + " is NOT a Palindrome.");
+        // ===== Method 3: Deque =====
+        long start3 = System.nanoTime();
+        boolean result3 = dequeCheck(normalized);
+        long end3 = System.nanoTime();
+
+        // ===== Display Results =====
+        System.out.println("=== Performance Comparison ===");
+        System.out.println("Two-Pointer Result: " + result1 +
+                " | Time: " + (end1 - start1) + " ns");
+
+        System.out.println("Stack Result      : " + result2 +
+                " | Time: " + (end2 - start2) + " ns");
+
+        System.out.println("Deque Result      : " + result3 +
+                " | Time: " + (end3 - start3) + " ns");
+    }
+
+    // ================= TWO POINTER =================
+    public static boolean twoPointerCheck(String str) {
+        int start = 0;
+        int end = str.length() - 1;
+
+        while (start < end) {
+            if (str.charAt(start) != str.charAt(end))
+                return false;
+            start++;
+            end--;
         }
+        return true;
+    }
+
+    // ================= STACK =================
+    public static boolean stackCheck(String str) {
+        Stack<Character> stack = new Stack<>();
+
+        for (char c : str.toCharArray())
+            stack.push(c);
+
+        for (char c : str.toCharArray())
+            if (c != stack.pop())
+                return false;
+
+        return true;
+    }
+
+    // ================= DEQUE =================
+    public static boolean dequeCheck(String str) {
+        Deque<Character> deque = new ArrayDeque<>();
+
+        for (char c : str.toCharArray())
+            deque.addLast(c);
+
+        while (deque.size() > 1)
+            if (!deque.removeFirst().equals(deque.removeLast()))
+                return false;
+
+        return true;
     }
 }
