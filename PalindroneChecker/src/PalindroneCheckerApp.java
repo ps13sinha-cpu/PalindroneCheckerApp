@@ -1,17 +1,17 @@
 /**
  * ===============================================================
- * MAIN CLASS – UseCase9PalindromeCheckerApp
+ * MAIN CLASS – UseCase10PalindromeCheckerApp
  * ===============================================================
  *
- * Use Case 9: Recursive Palindrome Checker
+ * Use Case 10: Case-Insensitive & Space-Ignored Palindrome
  *
  * Description:
- * This class validates a palindrome using recursion.
- * It compares characters from start and end positions
- * until the base condition is reached.
+ * This class validates a palindrome by normalizing
+ * the string (removing spaces and ignoring case)
+ * before performing the comparison.
  *
  * @author Developer
- * @version 9.0
+ * @version 10.0
  */
 
 public class PalindroneCheckerApp {
@@ -19,35 +19,29 @@ public class PalindroneCheckerApp {
     public static void main(String[] args) {
 
         // Define the input string
-        String input = "madam";
+        String input = "A man a plan a canal Panama";
 
-        // Call recursive method
-        boolean isPalindrome = isPalindrome(input, 0, input.length() - 1);
+        // Normalize string: remove spaces & convert to lowercase
+        String normalized = input.replaceAll("\\s+", "").toLowerCase();
+
+        boolean isPalindrome = true;
+
+        // Compare characters from both ends
+        for (int i = 0; i < normalized.length() / 2; i++) {
+
+            // Compare symmetric characters
+            if (normalized.charAt(i) !=
+                    normalized.charAt(normalized.length() - 1 - i)) {
+                isPalindrome = false;
+                break;
+            }
+        }
 
         // Display result
         if (isPalindrome) {
-            System.out.println(input + " is a Palindrome.");
+            System.out.println("\"" + input + "\" is a Palindrome.");
         } else {
-            System.out.println(input + " is NOT a Palindrome.");
+            System.out.println("\"" + input + "\" is NOT a Palindrome.");
         }
-    }
-
-    /**
-     * Recursive palindrome check
-     */
-    public static boolean isPalindrome(String str, int start, int end) {
-
-        // Base condition: pointers crossed or equal
-        if (start >= end) {
-            return true;
-        }
-
-        // If mismatch found
-        if (str.charAt(start) != str.charAt(end)) {
-            return false;
-        }
-
-        // Recursive call for inner substring
-        return isPalindrome(str, start + 1, end - 1);
     }
 }
