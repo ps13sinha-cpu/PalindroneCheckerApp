@@ -1,49 +1,28 @@
 /**
  * ===============================================================
- * MAIN CLASS – UseCase8PalindromeCheckerApp
+ * MAIN CLASS – UseCase9PalindromeCheckerApp
  * ===============================================================
  *
- * Use Case 8: Linked List Based Palindrome Checker
+ * Use Case 9: Recursive Palindrome Checker
  *
  * Description:
- * This class validates a palindrome by storing characters
- * in a LinkedList and comparing elements from both ends.
+ * This class validates a palindrome using recursion.
+ * It compares characters from start and end positions
+ * until the base condition is reached.
  *
  * @author Developer
- * @version 8.0
+ * @version 9.0
  */
-
-import java.util.LinkedList;
 
 public class PalindroneCheckerApp {
 
-    /**
-     * Application entry point for UC8.
-     * @param args Command-line arguments
-     */
     public static void main(String[] args) {
 
         // Define the input string
-        String input = "level";
+        String input = "madam";
 
-        // Create a LinkedList to store characters
-        LinkedList<Character> list = new LinkedList<>();
-
-        // Add each character to the linked list
-        for (char c : input.toCharArray()) {
-            list.add(c);
-        }
-
-        // Flag to track palindrome state
-        boolean isPalindrome = true;
-
-        // Compare until only one or zero elements remain
-        while (list.size() > 1) {
-            if (!list.removeFirst().equals(list.removeLast())) {
-                isPalindrome = false;
-                break;
-            }
-        }
+        // Call recursive method
+        boolean isPalindrome = isPalindrome(input, 0, input.length() - 1);
 
         // Display result
         if (isPalindrome) {
@@ -51,5 +30,24 @@ public class PalindroneCheckerApp {
         } else {
             System.out.println(input + " is NOT a Palindrome.");
         }
+    }
+
+    /**
+     * Recursive palindrome check
+     */
+    public static boolean isPalindrome(String str, int start, int end) {
+
+        // Base condition: pointers crossed or equal
+        if (start >= end) {
+            return true;
+        }
+
+        // If mismatch found
+        if (str.charAt(start) != str.charAt(end)) {
+            return false;
+        }
+
+        // Recursive call for inner substring
+        return isPalindrome(str, start + 1, end - 1);
     }
 }
